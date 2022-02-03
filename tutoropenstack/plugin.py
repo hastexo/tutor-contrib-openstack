@@ -19,6 +19,13 @@ config = {
         'KEYPAIR': None,
         'MASTER_COUNT': 1,
         'NODE_COUNT': 1,
+        'KUBERNETES_VERSION': None,
+        'DOCKER_VOLUME_SIZE': 50,
+        'FIXED_NETWORK': None,
+        'FIXED_SUBNET': None,
+        'NETWORK_DRIVER': None,
+        'HYPERKUBE_PREFIX': None,
+        'ENABLE_REGISTRY': False,
     },
 }
 
