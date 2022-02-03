@@ -1,0 +1,2 @@
+recursive-include tutoropenstack/patches *
+recursive-include tutoropenstack/templates *
