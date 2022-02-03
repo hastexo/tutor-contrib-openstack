@@ -1,2 +1,2 @@
 #!/bin/sh
-exec tox
+exec tox -e py38,py39,flake8
