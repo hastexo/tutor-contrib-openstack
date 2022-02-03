@@ -1,6 +1,8 @@
 """Plugin definition for the Tutor openstack plugin."""
 
 from glob import glob
+from .command import openstack as openstack_command
+
 import os
 import pkg_resources
 
@@ -9,9 +11,22 @@ templates = pkg_resources.resource_filename(
     "tutoropenstack", "templates"
 )
 
-config = {}
+
+config = {
+    "defaults": {
+        'CLUSTER_NAME': 'tutor',
+        'TEMPLATE': 'tutor-kubernetes',
+        'KEYPAIR': None,
+        'MASTER_COUNT': 1,
+        'NODE_COUNT': 1,
+    },
+}
+
 
 hooks = {}
+
+
+command = openstack_command
 
 
 def patches():

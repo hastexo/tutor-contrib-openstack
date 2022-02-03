@@ -28,7 +28,10 @@ setup(
     packages=find_packages(exclude=["tests*"]),
     include_package_data=True,
     python_requires=">=3.6",
-    install_requires=["tutor"],
+    install_requires=[
+        "tutor",
+        "openstacksdk",
+    ],
     entry_points={
         "tutor.plugin.v0": [
             "openstack = tutoropenstack.plugin"
