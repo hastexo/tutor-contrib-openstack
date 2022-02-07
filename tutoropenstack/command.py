@@ -4,6 +4,7 @@ This defines the "openstack" command group and its subcommands:
 
 * create-cluster
 * create-template
+* delete-cluster
 """
 import click
 
@@ -167,3 +168,32 @@ def create_template(context, dry_run):
         cluster = conn.create_coe_cluster_template(**kwargs)
         fmt.echo_info("Cluster template creation returned:\n%s" %
                       pformat(cluster))
+
+
+@openstack.command(help="Delete Kubernetes cluster running on OpenStack")
+@click.option("-y", "--yes", is_flag=True, help="Do not ask for confirmation.")
+@click.option('--dry-run', is_flag=True, default=False,
+              help="Don't actually interact with OpenStack, "
+                   "just show what would be done.")
+@click.pass_obj
+def delete_cluster(context, dry_run, yes):
+    """Delete a Magnum cluster based on Tutor settings."""
+    config = tutor_config.load(context.root)
+    cluster_name = config['OPENSTACK_CLUSTER_NAME']
+
+    if not yes:
+        click.confirm(
+            f"Are you sure you want to delete cluster \"{cluster_name}\"? "
+            "All data will be removed.",
+            abort=True,
+        )
+
+    fmt.echo_info(f"Sending request to delete cluster \"{cluster_name}\"")
+    if dry_run:
+        fmt.echo_info("Dry run, not invoking API call")
+    else:
+        conn = get_openstack_connection()
+        if conn.delete_coe_cluster(cluster_name):
+            fmt.echo_info("Cluster deletion request sent")
+        else:
+            fmt.echo_info("Cluster deletion request failed")
