@@ -1,3 +1,4 @@
+"""Installation facility for the tutor-contrib-openstack package."""
 import io
 import os
 from setuptools import setup, find_packages
@@ -6,6 +7,7 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 
 
 def load_readme():
+    """Load the README.md file and return its contents as a string."""
     with io.open(os.path.join(HERE, "README.md"), "rt", encoding="utf8") as f:
         return f.read()
 

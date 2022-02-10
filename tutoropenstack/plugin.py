@@ -1,3 +1,5 @@
+"""Plugin definition for the Tutor openstack plugin."""
+
 from glob import glob
 import os
 import pkg_resources
@@ -13,6 +15,7 @@ hooks = {}
 
 
 def patches():
+    """Collect Tutor patches from all available sources."""
     all_patches = {}
     patches_dir = pkg_resources.resource_filename(
         "tutoropenstack", "patches"
