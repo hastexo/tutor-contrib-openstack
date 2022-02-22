@@ -5,14 +5,23 @@ This defines the "openstack" command group and its subcommands:
 * create-cluster
 * create-template
 * delete-cluster
+* registry
 """
 import click
+import yaml
 
 from tutor import config as tutor_config
 from tutor import fmt
+from tutor.utils import docker_run
 
 from openstack import connection
 from pprint import pformat
+from tempfile import NamedTemporaryFile
+
+# Magnum generally expects the container to be named exactly like
+# this. Whoever administers the Magnum service can change this with a
+# configuration override, but this is practically never done.
+REGISTRY_SWIFT_CONTAINER = 'docker_registry'
 
 
 @click.group(name="openstack",
@@ -197,3 +206,115 @@ def delete_cluster(context, dry_run, yes):
             fmt.echo_info("Cluster deletion request sent")
         else:
             fmt.echo_info("Cluster deletion request failed")
+
+
+def create_registry_config(conn):
+    """Create a configuration for a Swift-backed registry container."""
+    registry_config = {
+        'version': '0.1',
+        'http': {
+            'addr': ':5000',
+            'headers': {
+                'Access-Control-Allow-Origin': ['*'],
+                'Access-Control-Allow-Methods': [
+                    'HEAD',
+                    'GET',
+                    'OPTIONS',
+                    'DELETE'
+                ],
+                'Access-Control-Expose-Headers': [
+                    'Docker-Content-Digest',
+                ],
+            },
+        },
+        'storage': {
+            'swift': {
+                'authurl': conn.auth['auth_url'],
+                'authversion': 3,
+                'username': conn.auth['username'],
+                'domain': conn.auth['user_domain_name'],
+                'password': conn.auth['password'],
+                'container': REGISTRY_SWIFT_CONTAINER,
+                'tenant': conn.auth['project_name'],
+                'tenantdomain': conn.auth['project_domain_name'],
+                'region': conn.identity.region_name,
+            },
+            'delete': {
+                'enabled': True
+            },
+        },
+        'log': {
+            'level': 'debug',
+            'fields': {
+                'service': 'registry',
+            },
+        },
+    }
+    return registry_config
+
+
+@openstack.command(help="Run a local registry for pushing images "
+                   "to an OpenStack Kubernetes cluster")
+@click.option("--with-ui", is_flag=True,
+              help="Run a local registry web user interface")
+@click.pass_obj
+def registry(context, with_ui):
+    """Run a local registry on port 5000, with an optional web UI."""
+    config = tutor_config.load(context.root)
+    if not config['OPENSTACK_ENABLE_REGISTRY']:
+        fmt.echo_alert("OPENSTACK_ENABLE_REGISTRY is not set to true. "
+                       "You must set it so your OpenStack Kubernetes cluster"
+                       "can use this registry.")
+    # TODO: This should also check the cluster (and template) to see
+    # if it exposes a registry.
+
+    conn = get_openstack_connection()
+    registry_config = create_registry_config(conn)
+    registry_title = "%s in %s" % (conn.auth['project_name'],
+                                   conn.identity.region_name)
+
+    # The registry's config.yml contains OpenStack credentials. We
+    # don't want those to be acessible from the host, so we use a
+    # NamedTemporaryFile here which is unlinked from the filesystem as
+    # soon as we leave the context manager (i.e. as soon as "docker
+    # run -d" is done firing up the container).
+    #
+    # Not leaking the OpenStack credentials is also why we're doing
+    # things this way in the first place, rather than just adding
+    # docker-compose patches for both services.
+    with NamedTemporaryFile(mode="r+", suffix=".yml") as config_file:
+        yaml.safe_dump(registry_config, config_file)
+        fmt.echo_info("Wrote registry configuration to %s" % config_file.name)
+
+        registry_args = [
+            "-d",
+            "--network", "host",
+            "-v", "%s:/etc/docker/registry/config.yml" % config_file.name,
+            "--name", "tutor-openstack-registry",
+            "registry:2"
+        ]
+
+        docker_run(*registry_args)
+        fmt.echo_info(f"OpenStack-backed registry for {registry_title} "
+                      "running at http://localhost:5000")
+
+    if with_ui:
+        # This really should also run with "--network host", but the image
+        # has no way to override its listening port (it hardcodes 80/tcp),
+        # so it can't run in host networking mode except when running as
+        # root. Thus, to make it run as non-root, use default (bridged)
+        # networking instead, and publish container port 80 as host port
+        # 8000.
+        registry_ui_args = [
+            "--detach",
+            "--publish", "8000:80",
+            "-e", "SINGLE_REGISTRY=true",
+            "-e", "REGISTRY_URL=http://localhost:5000",
+            "-e", f"REGISTRY_TITLE={registry_title}",
+            "-e", "DELETE_IMAGES=true",
+            "--name", "tutor-openstack-registry-ui",
+            "joxit/docker-registry-ui:2"
+        ]
+        docker_run(*registry_ui_args)
+        fmt.echo_info(f"Registry web UI for {registry_title} "
+                      "running at http://localhost:8000")

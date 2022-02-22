@@ -67,6 +67,40 @@ delete *all* Tutor deployments in all Kubernetes namespaces. Proceed
 at your own risk.
 
 
+### Running your own registry
+
+OpenStack Magnum has a feature in which it exposes a private registry,
+backed by OpenStack Swift, on all worker nodes. You can use this
+feature with Tutor, to expose your custom-built images to your
+Kubernetes cluster.
+
+To do so, you will have to
+
+1. set `OPENSTACK_ENABLE_REGISTRY` to `true` *before* you run `tutor
+   openstack create-template` and `tutor openstack create-cluster`.
+
+2. run `tutor openstack registry` to run a local copy of the registry,
+   which is backed by the same Swift object store as that in your
+   Kubernetes cluster. To be clear, that means that your locally
+   available registry and that in your production cluster *are
+   functionally identical,* since they are backed by the same storage.
+
+3. set your Tutor image references to include the `localhost:5000`
+   registry.
+
+4. run `tutor images build` and `tutor images push` to create and
+   register your images, as you [you normally
+   would](https://docs.tutor.overhang.io/configuration.html#custom-open-edx-docker-image)
+   with any other custom Tutor images or specific registry.
+
+Please note: when used in this manner, the images in your registry
+become available to your entire Kubernetes cluster, not just to a
+single namespace. If you are planning to run multiple Tutor
+configurations on one cluster, each using its own namespace, and they
+should all use different flavors of your custom images, then you must
+apply a naming or tagging convention to tell your images apart.
+
+
 ### Required `config.yml` settings
 
 *If you plan to invoke `tutor openstack create-template`,* you must
@@ -147,7 +181,7 @@ thus apply only if you run `tutor openstack create-template`:
   (or any other service exposing the Swift API). Default `false`; if
   you set this to `true` be sure to check with your OpenStack service
   provider if they have configured their Magnum service to support
-  this.
+  this. 
 
 
 ## License
