@@ -1,9 +1,9 @@
 # openstack plugin for [Tutor](https://docs.tutor.overhang.io)
 
-This plugin adds a `tutor openstack` command group to Tutor, which you
-can use to create a Kubernetes cluster with [OpenStack
-Magnum](https://docs.openstack.org/magnum/latest/user/), running on a
-private or public OpenStack cloud.
+This **experimental** plugin adds a `tutor openstack` command group to
+Tutor, which you can use to create a Kubernetes cluster with
+[OpenStack Magnum](https://docs.openstack.org/magnum/latest/user/),
+running on a private or public OpenStack cloud.
 
 You can do so by spinning up a cluster based on a *template* that your
 cloud service provider has created for you, or — provided you have the
