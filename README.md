@@ -101,6 +101,26 @@ should all use different flavors of your custom images, then you must
 apply a naming or tagging convention to tell your images apart.
 
 
+## Configuration
+
+This plugin uses configuration information from two sources:
+
+* the `OS_*` environment variables you use to connect to your
+  OpenStack API,
+* Tutor’s own `config.yml` configuration.
+
+
+### OpenStack environment variables
+
+This plugin will read your OpenStack credentials and
+project/domain/region configuration from the environment, like any
+other OpenStack application would. That means that you can either set
+`OS_CLOUD` to select a configuration [from a `clouds.yaml`
+file](https://docs.openstack.org/python-openstackclient/latest/cli/man/openstack.html#config-files),
+or define a set of individual [`OS_*` environment
+variables](https://docs.openstack.org/python-openstackclient/latest/cli/man/openstack.html#environment-variables).
+
+
 ### Required `config.yml` settings
 
 *If you plan to invoke `tutor openstack create-template`,* you must
