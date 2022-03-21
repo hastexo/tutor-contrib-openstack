@@ -263,7 +263,7 @@ def registry(context, with_ui):
     config = tutor_config.load(context.root)
     if not config['OPENSTACK_ENABLE_REGISTRY']:
         fmt.echo_alert("OPENSTACK_ENABLE_REGISTRY is not set to true. "
-                       "You must set it so your OpenStack Kubernetes cluster"
+                       "You must set it so your OpenStack Kubernetes cluster "
                        "can use this registry.")
     # TODO: This should also check the cluster (and template) to see
     # if it exposes a registry.
