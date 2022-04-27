@@ -9,7 +9,10 @@ This defines the "openstack" command group and its subcommands:
 """
 import click
 import yaml
+import requests
 
+from urllib3 import Retry
+from urllib3.exceptions import MaxRetryError
 from tutor import config as tutor_config
 from tutor import fmt
 from tutor.utils import docker_run
@@ -295,6 +298,22 @@ def registry(context, with_ui):
         ]
 
         docker_run(*registry_args)
+
+        # Check if the registry service has started up before continuing.
+        # Retry with backoff factor 2 and total of 10 means the amount of
+        # sleep will exponentially increase between retires up to 256
+        # seconds. So we can wait up to 17 minutes total for the registry
+        # service to start working.
+        retries = Retry(total=10, backoff_factor=2,
+                        status_forcelist=[429, 500, 502, 503, 504])
+        adapter = requests.adapters.HTTPAdapter(max_retries=retries)
+        session = requests.sessions.Session()
+        session.mount("http://", adapter)
+        try:
+            session.get("http://localhost:5000/v2/_catalog")
+        except MaxRetryError:
+            raise
+
         fmt.echo_info(f"OpenStack-backed registry for {registry_title} "
                       "running at http://localhost:5000")
 
