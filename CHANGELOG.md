@@ -1,3 +1,7 @@
+## Unreleased
+
+* refactor: Use Tutor v1 plugin API.
+
 ## Version 0.1.2 (2022-04-27)
 
 * fix: Add a check to wait for the registry to start up before continuing.

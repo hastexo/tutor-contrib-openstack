@@ -6,10 +6,7 @@ from .command import openstack as openstack_command
 import os
 import pkg_resources
 
-
-templates = pkg_resources.resource_filename(
-    "tutoropenstack", "templates"
-)
+from tutor import hooks
 
 
 config = {
@@ -29,22 +26,48 @@ config = {
     },
 }
 
+hooks.filters.add_items(
+    "cli:commands",
+    [
+        openstack_command,
+    ],
+)
 
-hooks = {}
-
-
-command = openstack_command
-
-
-def patches():
-    """Collect Tutor patches from all available sources."""
-    all_patches = {}
-    patches_dir = pkg_resources.resource_filename(
-        "tutoropenstack", "patches"
+# Add the "templates" folder as a template root
+hooks.Filters.ENV_TEMPLATE_ROOTS.add_item(
+    pkg_resources.resource_filename("tutoropenstack", "templates")
+)
+# Render the "build" and "apps" folders
+hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
+    [
+        ("openstack/build", "plugins"),
+        ("openstack/apps", "plugins"),
+    ],
+)
+# Load patches from files
+for path in glob(
+    os.path.join(
+        pkg_resources.resource_filename("tutoropenstack", "patches"),
+        "*",
     )
-    for path in glob(os.path.join(patches_dir, "*")):
-        with open(path) as patch_file:
-            name = os.path.basename(path)
-            content = patch_file.read()
-            all_patches[name] = content
-    return all_patches
+):
+    with open(path, encoding="utf-8") as patch_file:
+        hooks.Filters.ENV_PATCHES.add_item(
+            (os.path.basename(path), patch_file.read())
+        )
+# Add configuration entries
+hooks.Filters.CONFIG_DEFAULTS.add_items(
+    [
+        (f"OPENSTACK_{key}", value)
+        for key, value in config.get("defaults", {}).items()
+    ]
+)
+hooks.Filters.CONFIG_UNIQUE.add_items(
+    [
+        (f"OPENSTACK_{key}", value)
+        for key, value in config.get("unique", {}).items()
+    ]
+)
+hooks.Filters.CONFIG_OVERRIDES.add_items(
+    list(config.get("overrides", {}).items())
+)

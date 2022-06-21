@@ -29,12 +29,12 @@ setup(
     include_package_data=True,
     python_requires=">=3.6",
     install_requires=[
-        "tutor<14",
+        "tutor <14, >=13.2.0",
         "openstacksdk",
     ],
     setup_requires=['setuptools-scm'],
     entry_points={
-        "tutor.plugin.v0": [
+        "tutor.plugin.v1": [
             "openstack = tutoropenstack.plugin"
         ]
     },
