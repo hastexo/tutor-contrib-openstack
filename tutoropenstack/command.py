@@ -147,7 +147,7 @@ def create_coe_cluster_template_kwargs(config):
         kwargs['registry_enabled'] = True
         kwargs['insecure_registry'] = 'localhost:5000'
     if keypair:
-        kwargs['keypair'] = keypair
+        kwargs['keypair_id'] = keypair
     return kwargs
 
 

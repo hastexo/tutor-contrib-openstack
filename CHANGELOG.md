@@ -1,3 +1,8 @@
+## Unreleased
+
+* fix: When invoking the OpenStack Magnum API for template creation,
+  identify the keypair with `keypair_id`, not just `keypair`.
+
 ## Version 0.3.0 (2022-07-20)
 
 * feat: Add the ability to set an SSH keypair on the cluster
