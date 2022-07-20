@@ -32,7 +32,7 @@ setup(
         "tutor <14, >=13.2.0",
         "openstacksdk",
     ],
-    setup_requires=['setuptools-scm'],
+    setup_requires=['setuptools-scm<7'],
     entry_points={
         "tutor.plugin.v1": [
             "openstack = tutoropenstack.plugin"
