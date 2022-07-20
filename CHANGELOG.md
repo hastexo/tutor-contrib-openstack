@@ -1,4 +1,4 @@
-## Unreleased
+## Version 0.3.0 (2022-07-20)
 
 * feat: Add the ability to set an SSH keypair on the cluster
   *template,* as opposed to just the cluster.
