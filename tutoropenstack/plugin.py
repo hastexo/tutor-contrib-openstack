@@ -13,6 +13,7 @@ config = {
     "defaults": {
         'CLUSTER_NAME': 'tutor',
         'TEMPLATE': 'tutor-kubernetes',
+        'TEMPLATE_KEYPAIR': None,
         'KEYPAIR': None,
         'MASTER_COUNT': 1,
         'NODE_COUNT': 1,

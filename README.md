@@ -173,6 +173,10 @@ to any invocation of the `tutor openstack create-cluster` command.
 Other variables can only be set for a *cluster template,* and will
 thus apply only if you run `tutor openstack create-template`:
 
+* `OPENSTACK_TEMPLATE_KEYPAIR`: The default keypair to configure with
+  your template. If unset, no keypair reference will be set on the
+  template, and you would set the keypair with
+  `OPENSTACK_KEYPAIR`.
 * `OPENSTACK_KUBERNETES_VERSION`: The Kubernetes version to deploy. If
   unset, this will configure the template to deploy whatever
   Kubernetes release is the default for your version of OpenStack

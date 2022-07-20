@@ -1,3 +1,8 @@
+## Unreleased
+
+* feat: Add the ability to set an SSH keypair on the cluster
+  *template,* as opposed to just the cluster.
+
 ## Version 0.2.0 (2022-06-29)
 
 * refactor: Use Tutor v1 plugin API.

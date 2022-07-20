@@ -110,6 +110,7 @@ def create_coe_cluster_template_kwargs(config):
     image = config['OPENSTACK_IMAGE']
     hyperkube_prefix = config['OPENSTACK_HYPERKUBE_PREFIX']
     enable_registry = config['OPENSTACK_ENABLE_REGISTRY']
+    keypair = config['OPENSTACK_TEMPLATE_KEYPAIR']
 
     labels = {
         'container_runtime': 'containerd',
@@ -145,6 +146,8 @@ def create_coe_cluster_template_kwargs(config):
     if enable_registry:
         kwargs['registry_enabled'] = True
         kwargs['insecure_registry'] = 'localhost:5000'
+    if keypair:
+        kwargs['keypair'] = keypair
     return kwargs
 
 
