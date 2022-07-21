@@ -17,7 +17,7 @@ with the `tutor k8s` command group.
 ## Installation
 
 ```
-pip install git+https://github.com/hastexo/tutor-contrib-openstack@v0.3.0
+pip install git+https://github.com/hastexo/tutor-contrib-openstack@v0.3.1
 ```
 
 

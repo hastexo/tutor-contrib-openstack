@@ -1,4 +1,4 @@
-## Unreleased
+## Version 0.3.1 (2022-07-21)
 
 * fix: When invoking the OpenStack Magnum API for template creation,
   identify the keypair with `keypair_id`, not just `keypair`.
