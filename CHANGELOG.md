@@ -1,3 +1,7 @@
+## Unreleased
+
+ * Support Tutor 15 and Open edX Olive.
+
 ## Version 1.0.0 (2022-08-04)
 
 * [BREAKING CHANGE] Support Tutor 14 and Open edX Nutmeg. This entails

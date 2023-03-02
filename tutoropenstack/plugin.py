@@ -27,12 +27,7 @@ config = {
     },
 }
 
-hooks.filters.add_items(
-    "cli:commands",
-    [
-        openstack_command,
-    ],
-)
+hooks.Filters.CLI_COMMANDS.add_item(openstack_command)
 
 # Add the "templates" folder as a template root
 hooks.Filters.ENV_TEMPLATE_ROOTS.add_item(
