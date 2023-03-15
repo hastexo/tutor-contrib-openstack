@@ -36,7 +36,7 @@ appropriate one:
 ## Installation
 
 ```
-pip install git+https://github.com/hastexo/tutor-contrib-openstack@v1.0.0
+pip install git+https://github.com/hastexo/tutor-contrib-openstack@v1.1.0
 ```
 
 
