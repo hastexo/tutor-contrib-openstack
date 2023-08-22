@@ -29,7 +29,7 @@ setup(
     include_package_data=True,
     python_requires=">=3.6",
     install_requires=[
-        "tutor <16, >=14.0.0",
+        "tutor <17, >=14.0.0",
         "openstacksdk",
     ],
     setup_requires=['setuptools-scm<7'],
@@ -49,5 +49,6 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
     ],
 )
