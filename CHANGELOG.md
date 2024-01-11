@@ -1,3 +1,7 @@
+## Unreleased
+
+* [Enhancement] Support Tutor 17 and Open edX Quince.
+
 ## Version 1.2.0 (2023-08-23)
 
 * [Enhancement] Support Tutor 16, Open edX Palm, and Python 3.11.

@@ -29,7 +29,7 @@ setup(
     include_package_data=True,
     python_requires=">=3.6",
     install_requires=[
-        "tutor <17, >=14.0.0",
+        "tutor <18, >=14.0.0",
         "openstacksdk",
     ],
     setup_requires=['setuptools-scm<7'],
