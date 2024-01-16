@@ -1,14 +1,19 @@
+## Unreleased
+
+* fix: Make the `tutor openstack registry` command behave correctly
+  when invoked in Docker-in-Docker.
+
 ## Version 1.3.0 (2024-01-12)
 
-* [Enhancement] Support Tutor 17 and Open edX Quince.
+* feat: Support Tutor 17 and Open edX Quince.
 
 ## Version 1.2.0 (2023-08-23)
 
-* [Enhancement] Support Tutor 16, Open edX Palm, and Python 3.11.
+* feat: Support Tutor 16, Open edX Palm, and Python 3.11.
 
 ## Version 1.1.0 (2023-03-15)
 
- * Support Tutor 15 and Open edX Olive.
+* feat: Support Tutor 15 and Open edX Olive.
 
 ## Version 1.0.0 (2022-08-04)
 
