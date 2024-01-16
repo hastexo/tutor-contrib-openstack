@@ -1,4 +1,4 @@
-## Unreleased
+## Version 1.3.1 (2024-01-16)
 
 * fix: Make the `tutor openstack registry` command behave correctly
   when invoked in Docker-in-Docker.
