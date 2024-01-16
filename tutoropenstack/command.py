@@ -10,6 +10,7 @@ This defines the "openstack" command group and its subcommands:
 import click
 import yaml
 import requests
+import os
 
 from urllib3 import Retry
 from urllib3.exceptions import MaxRetryError
@@ -20,6 +21,7 @@ from tutor.utils import docker_run
 from openstack import connection
 from pprint import pformat
 from tempfile import NamedTemporaryFile
+from urllib.parse import urlparse
 
 # Magnum generally expects the container to be named exactly like
 # this. Whoever administers the Magnum service can change this with a
@@ -312,13 +314,28 @@ def registry(context, with_ui):
         adapter = requests.adapters.HTTPAdapter(max_retries=retries)
         session = requests.sessions.Session()
         session.mount("http://", adapter)
+
+        registry_address = "http://localhost:5000"
+        # If we're running in Docker-in-Docker, then we might be
+        # dealing with a non-UNIX-socket DOCKER_HOST.
+        # In that case, we can't check against localhost, but instead
+        # need to look at the hostname part of DOCKER_HOST.
         try:
-            session.get("http://localhost:5000/v2/_catalog")
+            docker_host = os.environ['DOCKER_HOST']
+            docker_hostname = urlparse(docker_host).hostname
+            if docker_hostname:
+                registry_address = f"http://{docker_hostname}:5000"
+        except KeyError:
+            # No DOCKER_HOST is set in the environment
+            pass
+
+        try:
+            session.get(f"{registry_address}/v2/_catalog")
         except MaxRetryError:
             raise
 
         fmt.echo_info(f"OpenStack-backed registry for {registry_title} "
-                      "running at http://localhost:5000")
+                      f"running at {registry_address}")
 
     if with_ui:
         # This really should also run with "--network host", but the image
