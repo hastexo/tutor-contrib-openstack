@@ -1,4 +1,4 @@
-## Unreleased
+## Version 1.3.2 (2024-01-22)
 
 * fix: Un-break cluster template creation with `openstacksdk>=1.0.0`.
 * fix: Add the ability to set a boot volume size when creating the
