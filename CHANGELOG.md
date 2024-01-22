@@ -1,5 +1,6 @@
 ## Unreleased
 
+* fix: Un-break cluster template creation with `openstacksdk>=1.0.0`.
 * fix: Add the ability to set a boot volume size when creating the
   cluster template (via `OPENSTACK_BOOT_VOLUME_SIZE`).
 

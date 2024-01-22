@@ -185,7 +185,7 @@ def create_template(context, dry_run):
         fmt.echo_info("Dry run, not invoking API call")
     else:
         conn = get_openstack_connection()
-        cluster = conn.create_coe_cluster_template(**kwargs)
+        cluster = conn.create_cluster_template(**kwargs)
         fmt.echo_info("Cluster template creation returned:\n%s" %
                       pformat(cluster))
 
