@@ -8,6 +8,5 @@ options) by:
 https://packaging.python.org/guides/single-sourcing-package-version/
 """
 
-import pkg_resources
-__version__ = pkg_resources.get_distribution(
-    'tutor-contrib-openstack').version
+from importlib import metadata
+__version__ = metadata.version('tutor-contrib-openstack')
