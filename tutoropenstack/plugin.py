@@ -19,6 +19,7 @@ config = {
         'NODE_COUNT': 1,
         'KUBERNETES_VERSION': None,
         'DOCKER_VOLUME_SIZE': 50,
+        'BOOT_VOLUME_SIZE': None,
         'FIXED_NETWORK': None,
         'FIXED_SUBNET': None,
         'NETWORK_DRIVER': None,

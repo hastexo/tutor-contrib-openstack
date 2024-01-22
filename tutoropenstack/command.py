@@ -102,6 +102,7 @@ def create_coe_cluster_template_kwargs(config):
     """Construct arguments for the create_coe_cluster_template command."""
     kubernetes_version = config['OPENSTACK_KUBERNETES_VERSION']
     name = config['OPENSTACK_TEMPLATE']
+    boot_volume_size = config['OPENSTACK_BOOT_VOLUME_SIZE']
     docker_volume_size = config['OPENSTACK_DOCKER_VOLUME_SIZE']
     external_network = config['OPENSTACK_EXTERNAL_NETWORK']
     master_flavor = config['OPENSTACK_MASTER_FLAVOR']
@@ -124,6 +125,8 @@ def create_coe_cluster_template_kwargs(config):
         labels['kube_tag'] = f'v{kubernetes_version}'
     if hyperkube_prefix:
         labels['hyperkube_prefix'] = hyperkube_prefix
+    if boot_volume_size:
+        labels['boot_volume_size'] = boot_volume_size
 
     kwargs = {
         'name': name,
