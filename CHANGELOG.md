@@ -1,3 +1,7 @@
+## Unreleased
+
+* [Enhancement] Support Python 3.12.
+
 ## Version 1.3.2 (2024-01-22)
 
 * fix: Un-break cluster template creation with `openstacksdk>=1.0.0`.

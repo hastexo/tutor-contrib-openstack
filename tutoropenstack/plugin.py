@@ -4,7 +4,10 @@ from glob import glob
 from .command import openstack as openstack_command
 
 import os
-import pkg_resources
+# When Tutor drops support for Python 3.8, we'll need to update this to:
+# from importlib import resources as importlib_resources
+# See: https://github.com/overhangio/tutor/issues/966#issuecomment-1938681102
+import importlib_resources
 
 from tutor import hooks
 
@@ -32,7 +35,7 @@ hooks.Filters.CLI_COMMANDS.add_item(openstack_command)
 
 # Add the "templates" folder as a template root
 hooks.Filters.ENV_TEMPLATE_ROOTS.add_item(
-    pkg_resources.resource_filename("tutoropenstack", "templates")
+    str(importlib_resources.files("tutoropenstack") / "templates")
 )
 # Render the "build" and "apps" folders
 hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
@@ -42,12 +45,9 @@ hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
     ],
 )
 # Load patches from files
-for path in glob(
-    os.path.join(
-        pkg_resources.resource_filename("tutoropenstack", "patches"),
-        "*",
-    )
-):
+for path in glob(str(
+        importlib_resources.files("tutoropenstack") / "patches" / "*")):
+
     with open(path, encoding="utf-8") as patch_file:
         hooks.Filters.ENV_PATCHES.add_item(
             (os.path.basename(path), patch_file.read())
