@@ -1,3 +1,7 @@
+## Unreleased
+
+* chore: Drop Python 3.8 support.
+
 ## Version 1.5.0 (2024-07-31)
 
 * [Enhancement] Support Tutor 18 and Open edX Redwood.

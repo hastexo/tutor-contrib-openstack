@@ -27,7 +27,7 @@ setup(
     long_description_content_type='text/markdown',
     packages=find_packages(exclude=["tests*"]),
     include_package_data=True,
-    python_requires=">=3.6",
+    python_requires=">=3.9",
     install_requires=[
         "tutor <19, >=14.0.0",
         "openstacksdk>=1.0.0",
@@ -44,9 +44,6 @@ setup(
         "License :: OSI Approved :: GNU Affero General Public License v3",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
