@@ -1,4 +1,4 @@
-## Unreleased
+## Version 2.0.0 (2024-10-07)
 
 * chore: Drop Python 3.8 support.
 
