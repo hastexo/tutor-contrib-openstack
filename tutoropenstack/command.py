@@ -219,7 +219,7 @@ def delete_cluster(context, dry_run, yes):
             fmt.echo_info("Cluster deletion request failed")
 
 
-def create_registry_config(conn):
+def create_registry_config(conn, read_only=False):
     """Create a configuration for a Swift-backed registry container."""
     registry_config = {
         'version': '0.1',
@@ -253,6 +253,11 @@ def create_registry_config(conn):
             'delete': {
                 'enabled': True
             },
+            'maintenance': {
+                'readonly': {
+                    "enabled": read_only,
+                },
+            },
         },
         'log': {
             'level': 'debug',
@@ -268,8 +273,10 @@ def create_registry_config(conn):
                    "to an OpenStack Kubernetes cluster")
 @click.option("--with-ui", is_flag=True,
               help="Run a local registry web user interface")
+@click.option("--read-only", is_flag=True,
+              help="Run the registry in read-only mode")
 @click.pass_obj
-def registry(context, with_ui):
+def registry(context, with_ui, read_only):
     """Run a local registry on port 5000, with an optional web UI."""
     config = tutor_config.load(context.root)
     if not config['OPENSTACK_ENABLE_REGISTRY']:
@@ -280,7 +287,7 @@ def registry(context, with_ui):
     # if it exposes a registry.
 
     conn = get_openstack_connection()
-    registry_config = create_registry_config(conn)
+    registry_config = create_registry_config(conn, read_only)
     registry_title = "%s in %s" % (conn.auth['project_name'],
                                    conn.identity.region_name)
 

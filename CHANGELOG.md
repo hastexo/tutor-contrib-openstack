@@ -1,3 +1,7 @@
+## Unreleased
+
+* [Enhancement] Add the ability to run the registry in read-only mode: `tutor openstack registry --read-only`.
+
 ## Version 2.0.0 (2024-10-07)
 
 * chore: Drop Python 3.8 support.
