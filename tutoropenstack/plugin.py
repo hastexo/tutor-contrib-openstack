@@ -28,6 +28,8 @@ config = {
         'NETWORK_DRIVER': None,
         'HYPERKUBE_PREFIX': None,
         'ENABLE_REGISTRY': False,
+        'REGISTRY_IMAGE': 'registry:2',
+        'REGISTRY_UI_IMAGE': 'joxit/docker-registry-ui:2',
     },
 }
 
