@@ -1,5 +1,16 @@
 # openstack plugin for [Tutor](https://docs.tutor.overhang.io)
 
+* * *
+
+Deprecation notice
+------------------
+
+This plugin (indirectly) relies on the availability of the Swift backend driver for the [distribution registry](https://distribution.github.io/distribution/), which was merely listed as "deprecated" in [the release notes for the v3.0.0-alpha.1](https://github.com/distribution/distribution/releases/tag/v3.0.0-alpha.1) pre-release, but which the [documentation already marks as "no longer supported"](https://distribution.github.io/distribution/storage-drivers/).
+
+As such, we have no plans to support this plugin beyond the Tutor 18/Open edX "Redwood" release, and encourage users to switch to a registry other than the built-in private registry that comes with OpenStack Magnum.
+
+* * *
+
 This **experimental** plugin adds a `tutor openstack` command group to
 Tutor, which you can use to create a Kubernetes cluster with
 [OpenStack Magnum](https://docs.openstack.org/magnum/latest/user/),
