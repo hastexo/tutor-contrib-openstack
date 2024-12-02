@@ -309,7 +309,7 @@ def registry(context, with_ui, read_only):
             "--network", "host",
             "-v", "%s:/etc/docker/registry/config.yml" % config_file.name,
             "--name", "tutor-openstack-registry",
-            "registry:2"
+            config['OPENSTACK_REGISTRY_IMAGE'],
         ]
 
         docker_run(*registry_args)
@@ -362,7 +362,7 @@ def registry(context, with_ui, read_only):
             "-e", f"REGISTRY_TITLE={registry_title}",
             "-e", "DELETE_IMAGES=true",
             "--name", "tutor-openstack-registry-ui",
-            "joxit/docker-registry-ui:2"
+            config['OPENSTACK_REGISTRY_UI_IMAGE'],
         ]
         docker_run(*registry_ui_args)
         fmt.echo_info(f"Registry web UI for {registry_title} "

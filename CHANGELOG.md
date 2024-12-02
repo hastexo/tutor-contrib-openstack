@@ -1,3 +1,7 @@
+## Unreleased
+
+* [Enhancement] Add the ability to override the registry and registry-ui images (with the `OPENSTACK_REGISTRY_IMAGE` and `OPENSTACK_REGISTRY_UI_IMAGE` options).
+
 ## Version 2.1.0 (2024-10-15)
 
 * [Enhancement] Add the ability to run the registry in read-only mode: `tutor openstack registry --read-only`.
